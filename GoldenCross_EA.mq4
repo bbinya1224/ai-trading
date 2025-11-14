@@ -387,8 +387,11 @@ void ManageTrailingStop()
                // 새 손절가가 기존보다 높을 때만 수정
                if(newSL > OrderStopLoss() && newSL < Bid)
                {
-                  OrderModify(OrderTicket(), OrderOpenPrice(), newSL, OrderTakeProfit(), 0, clrBlue);
-                  Print("✓ 매수 추적손절 업데이트: ", newSL);
+                  bool result = OrderModify(OrderTicket(), OrderOpenPrice(), newSL, OrderTakeProfit(), 0, clrBlue);
+                  if(result)
+                     Print("✓ 매수 추적손절 업데이트: ", newSL);
+                  else
+                     Print("✗ 매수 추적손절 업데이트 실패. 에러: ", GetLastError());
                }
             }
             else if(OrderType() == OP_SELL)
@@ -401,8 +404,11 @@ void ManageTrailingStop()
                {
                   if(newSL > Ask)
                   {
-                     OrderModify(OrderTicket(), OrderOpenPrice(), newSL, OrderTakeProfit(), 0, clrRed);
-                     Print("✓ 매도 추적손절 업데이트: ", newSL);
+                     bool result = OrderModify(OrderTicket(), OrderOpenPrice(), newSL, OrderTakeProfit(), 0, clrRed);
+                     if(result)
+                        Print("✓ 매도 추적손절 업데이트: ", newSL);
+                     else
+                        Print("✗ 매도 추적손절 업데이트 실패. 에러: ", GetLastError());
                   }
                }
             }
